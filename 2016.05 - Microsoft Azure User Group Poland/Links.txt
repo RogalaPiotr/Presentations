@@ -1,0 +1,18 @@
+Azure Benefits 90 days free:
+https://www.itprocloudessentials.com/
+Creator ARM:
+http://armviz.io/
+ARM Overview:
+https://azure.microsoft.com/en-us/documentation/articles/resource-group-overview/
+Web Installer 5.0:
+https://www.microsoft.com/web/downloads/platform.aspx
+PowerShell Azure – releases:
+https://github.com/Azure/azure-powershell/releases
+Blog:
+https://azure.microsoft.com/en-us/blog/
+Obecny status:
+https://azure.microsoft.com/en-us/status/#current
+Historia statusów:
+https://azure.microsoft.com/en-us/status/#history
+Gotowe .json-y:
+https://github.com/Azure/azure-quickstart-templates

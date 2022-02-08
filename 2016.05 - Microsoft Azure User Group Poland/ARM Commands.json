@@ -1,0 +1,8 @@
+#Logowanie
+Login-AzureRmAccount
+
+#Nowa RG
+New-AzureRmResourceGroup -Name maugp -Location "West Europe"
+
+#Deploy
+New-AzureRmResourceGroupDeployment -ResourceGroupName maugp -TemplateFile .\maugp.json -Verbose
