@@ -1,0 +1,20 @@
+// Step 1 - SecretNearExpiryEventGridNotification
+AzureDiagnostics
+| where ResourceProvider =="MICROSOFT.KEYVAULT"
+| where OperationName == "SecretNearExpiryEventGridNotification"
+| project eventGridEventProperties_eventType_s, eventGridEventProperties_data_ObjectName_g, _ResourceId, eventGridEventProperties_data_EXP_d
+
+// Step 2 - check dates
+AzureDiagnostics
+| where ResourceProvider =="MICROSOFT.KEYVAULT"
+| where OperationName == "SecretNearExpiryEventGridNotification"
+| where 1763664400 > eventGridEventProperties_data_EXP_d
+| project eventGridEventProperties_eventType_s, eventGridEventProperties_data_ObjectName_g, _ResourceId, eventGridEventProperties_data_EXP_d
+
+// Step 3 - convert time
+AzureDiagnostics
+| where ResourceProvider =="MICROSOFT.KEYVAULT"
+| where OperationName == "SecretNearExpiryEventGridNotification"
+| extend eventGridEventProperties_data_EXP_d = unixtime_seconds_todatetime(eventGridEventProperties_data_EXP_d)
+| where now() + 30d > eventGridEventProperties_data_EXP_d
+| project eventGridEventProperties_eventType_s, eventGridEventProperties_data_ObjectName_g, _ResourceId, eventGridEventProperties_data_EXP_d
