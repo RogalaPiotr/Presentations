@@ -1,0 +1,7 @@
+KeyVaultExpiration_CL
+|where Status_s == "Expired" or Status_s == "ExpiringSoon"
+|project VaultName_s, Name_s, Id_s, Expires_DateTime_s, Status_s, ItemType_s
+
+AppRegistrationExpiration_CL
+| where Status_s == "Expired" or Status_s == "ExpiringSoon"
+| project DisplayName_s, ObjectId_g, ApplicationId_g, Status_s, DaysToExpiration_d, Type
