@@ -30,6 +30,8 @@ Additionally, I am passionate about helping others grow in their knowledge and i
 
 I welcome any discussions on these topics or other areas of interest in the tech field. Feel free to reach out to me for any questions, collaborations, or opportunities to learn and grow together.
 
-Yuu can contact with me over page: <https://justcloud.pl>
+You can contact with me over page: <https://justcloud.pl>
+
 Linkedin: <https://www.linkedin.com/in/rogalapiotr/>
+
 Twitter: <https://twitter.com/RogalaPiotr>
