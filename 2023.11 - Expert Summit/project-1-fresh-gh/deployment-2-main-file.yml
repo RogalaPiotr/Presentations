@@ -1,0 +1,24 @@
+name: deployment-2-main-file
+
+on:
+  push:
+    branches:
+      - main
+    paths:
+      - '.github/workflows/deployment-2-main-file.yml'
+      - '.github/workflows/deployment-2-file-second.yml'
+
+jobs:
+  release_sandbox:
+    uses: ./.github/workflows/deployment-2-file-second.yml
+    with:
+      DEPLOYMENTSTAGE: sandbox
+      SUBSCRIPTIONID: ${{ vars.SANDBOXSUBSCRIPTIONID }}
+    secrets: inherit
+
+  release_production:
+    uses: ./.github/workflows/deployment-2-file-second.yml
+    with:
+      DEPLOYMENTSTAGE: production
+      SUBSCRIPTIONID: ${{ vars.SANDBOXSUBSCRIPTIONID }}
+    secrets: inherit

@@ -1,0 +1,18 @@
+on: 
+  push:
+    branches:
+      - 'main'
+
+jobs:
+  deployment:
+    runs-on: windows-latest
+    steps:
+    - uses: actions/checkout@v2
+    - name: Download Artifacts
+      run: echo "Download artifacts here"
+    - name: Create Resource Group
+      run: echo "Create resource group here"
+    - name: Provision Diagnostics Storage
+      run: echo "Provision diagnostics storage here"
+    - name: Parse ARM Output
+      run: echo "Parse ARM output here"

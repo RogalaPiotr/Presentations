@@ -1,0 +1,45 @@
+name: warsztaty/project-1-demo
+on:
+  workflow_dispatch:
+env:
+  ProductionSubscriptionID: ID_YOUR_SUBSCRIPTION
+  SandboxSubscriptionID: ID_YOUR_SUBSCRIPTION
+  agentImage: windows-latest
+  agentPool: Azure Pipelines
+  artifacts: project-1
+  location: westeurope
+  serviceConnectionProd: Sandbox
+  serviceConnectionSandbox: Sandbox
+jobs:
+  project_1_ci_build:
+    name: project_1_ci_build
+    uses: "./.github/workflows/project_1_ci_build.yml"
+    with:
+      agentPool: "${{ env.agentPool }}"
+      agentImage: "${{ env.agentImage }}"
+      artifacts: "${{ env.artifacts }}"
+  project_1_ci_deployment:
+    name: project_1_ci_deployment
+    needs: project_1_ci_build
+    uses: "./.github/workflows/project_1_ci_deployment.yml"
+    with:
+      serviceConnection: "${{ env.serviceConnectionSandbox }}"
+      agentPool: "${{ env.agentPool }}"
+      agentImage: "${{ env.agentImage }}"
+      artifacts: "${{ env.artifacts }}"
+      deploymentStage: sandbox
+      subscriptionID: "${{ env.SandboxSubscriptionID }}"
+      location: "${{ env.location }}"
+  project_1_ci_deployment_2:
+    name: project_1_ci_deployment_2
+    needs: project_1_ci_deployment_2
+    uses: ./.github/workflows/project_1_ci_deployment.yml
+    if: success() && github.ref == 'refs/heads/main'
+    with:
+      serviceConnection: "${{ env.serviceConnectionProd }}"
+      agentPool: "${{ env.agentPool }}"
+      agentImage: "${{ env.agentImage }}"
+      artifacts: "${{ env.artifacts }}"
+      deploymentStage: production
+      subscriptionID: "${{ env.ProductionSubscriptionID }}"
+      location: "${{ env.location }}"
