@@ -1,0 +1,49 @@
+name: ${{ github.event_name }}
+
+on:
+  workflow_dispatch:
+  push:
+    branches:
+      - 'main'
+
+jobs:
+  build:
+    runs-on: windows-latest
+    steps:
+    - uses: actions/checkout@v2
+    - name: Build
+      run: echo "Perform the build here"
+    - name: Publish Artifact
+      uses: actions/upload-artifact@v2
+      with:
+        name: project-1
+        path: ./
+
+  release_sandbox:
+    needs: build
+    runs-on: windows-latest
+    steps:
+    - name: Deploy to Sandbox
+      env:
+        SandboxSubscriptionID: ${{ secrets.SandboxSubscriptionID }}
+        serviceConnectionSandbox: ${{ secrets.serviceConnectionSandbox }}
+        agentPool: 'Azure Pipelines'
+        agentImage: 'windows-latest'
+        location: 'westeurope'
+        artifacts: 'project-1'
+      run: echo "Perform deployment to sandbox here"
+
+  release_prod:
+    needs: release_sandbox
+    if: github.ref == 'refs/heads/main'
+    runs-on: windows-latest
+    steps:
+    - name: Deploy to Production
+      env:
+        ProductionSubscriptionID: ${{ secrets.ProductionSubscriptionID }}
+        serviceConnectionProd: ${{ secrets.serviceConnectionProd }}
+        agentPool: 'Azure Pipelines'
+        agentImage: 'windows-latest'
+        location: 'westeurope'
+        artifacts: 'project-1'
+      run: echo "Perform deployment to production here"

@@ -1,0 +1,114 @@
+# Environment variables defined in a calling workflow are not accessible to this reusable workflow. Refer to the documentation for further details on this limitation.
+name: project_1_ci_deployment
+on:
+  workflow_call:
+    inputs:
+      serviceConnection:
+        required: false
+        default: ''
+        type: string
+      agentPool:
+        required: false
+        default: ''
+        type: string
+      agentImage:
+        required: false
+        default: ''
+        type: string
+      artifacts:
+        required: false
+        default: ''
+        type: string
+      deploymentStage:
+        required: false
+        default: ''
+        type: string
+      subscriptionID:
+        required: false
+        default: ''
+        type: string
+      location:
+        required: false
+        default: ''
+        type: string
+jobs:
+  deployment_${{ parameters.deploymentStage }}:
+    name: Deployment on env ${{ parameters.deploymentStage }}
+    runs-on: ${{ inputs.agentImage }}
+    environment:
+      name: azure-approval-${{ inputs.deploymentStage }}
+    if: github.RUN_NUMBER == 1
+    steps:
+    - name: checkout
+      uses: actions/checkout@v4.1.0
+    - name: download artifact
+      uses: actions/download-artifact@v3.0.2
+    - uses: actions/download-artifact@v3.0.2
+      with:
+        name: "${{ inputs.artifacts }}"
+        path: "${{ github.workspace }}"
+    - name: Create resourge group
+      id: create_rg
+      uses: azure/login@v1.4.6
+      with:
+        creds: "${{ secrets.AZURE_CREDENTIALS }}"
+        enable-AzPSSession: true
+    - name: Create resourge group
+      id: create_rg
+      uses: azure/powershell@v1.2.0
+      with:
+        inlineScript: |-
+          #Install-Module -Name Az.Resources -AllowClobber -Scope CurrentUser -Force
+          Import-Module Az.Resources
+          $templatepath = '${{ github.workspace }}/${{ inputs.artifacts }}/scripts/createresourcegroup.json'
+          $templateparampath = '${{ github.workspace }}/${{ inputs.artifacts }}/scripts/createresourcegroup-project1.${{ inputs.deploymentStage }}.param.json'
+          $subscription = Select-AzSubscription ${{ inputs.subscriptionID }}
+          Write-Host "Select subscription: "$subscription.Name", "$subscription.Id
+          Write-Host "Creating resource group on: "$subscription.Name", "$subscription.Id
+          $deploymentName = "createrg$(get-date -f yyyyMMddhhmmss)"
+          try{
+            $output = New-AzSubscriptionDeployment -TemplateFile $templatepath -TemplateParameterFile $templateparampath -Location ${{ inputs.location }} -name $deploymentName
+            Write-Host $output.ProvisioningState" - "$subscription.Name", "$subscription.Id
+          }
+          catch{
+            Write-Host "Something went wrong during deplyoment: "$subscription.Name", "$subscription.Id
+            throw $_
+            break
+          }
+          try{
+            Write-Host "Parsing parameters from .json output"
+            $output.Outputs.Keys | ForEach-Object {
+              $keyName = $_
+              $value = $output.Outputs[$_].value
+              # Creates a standard pipeline variable
+              Write-Output "##vso[task.setvariable variable=$keyName;]$value"
+              #Write-Output "##vso[task.setvariable variable=$keyName;isOutput=true;]$value"
+            }
+          }
+          catch{
+            Write-Host "Something went wrong during parsing parameters"
+            throw $_
+            break
+          }
+        errorActionPreference: Stop
+        failOnStandardError: false
+        azPSVersion: latest
+    - name: Provisioning diagnostics Storage
+      uses: azure/login@v1.4.6
+      with:
+        creds: "${{ secrets.AZURE_CREDENTIALS }}"
+    - name: Provisioning diagnostics Storage
+      run: |-
+        az group create --location "${{ inputs.location }}" --name "${{ env.ResourceGroupName }}" --subscription "${{ inputs.subscriptionID }}"
+        az deployment group create --resource-group "${{ env.ResourceGroupName }}" --no-prompt true --subscription "${{ inputs.subscriptionID }}" --mode "Incremental" --template-file "${{ github.workspace }}/${{ inputs.artifacts }}/scripts/storage.json" --parameters "${{ github.workspace }}/${{ inputs.artifacts }}/scripts/storage-diag001.${{ inputs.deploymentStage }}.param.json"
+    - name: Parse ARM output
+      if: env.storage_diag001_arm != ''
+      run: |-
+        $armOutputObj = $env:storage_diag001_arm| convertfrom-json
+        $armOutputObj.PSObject.Properties | ForEach-Object {
+          $keyname = $_.Name
+          $value = $_.Value.value
+          ## Creates a standard pipeline variable
+          Write-Output "##vso[task.setvariable variable=$keyName;]$value"
+        }
+      shell: pwsh

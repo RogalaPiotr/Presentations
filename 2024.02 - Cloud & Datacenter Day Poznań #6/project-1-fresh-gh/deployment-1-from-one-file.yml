@@ -1,0 +1,58 @@
+name: deployment-1-from-one-file
+
+on:
+  push:
+    branches:
+      - main
+    paths:
+      - '.github/workflows/deployment-1-from-one-file.yml'
+
+env:
+  DEPLOYMENTSTAGE: sandbox
+  SUBSCRIPTIONID: ID_YOUR_SUBSCRIPTION
+
+jobs:
+  get-env: # https://github.com/actions/runner/issues/2372#issuecomment-1591370444
+      name: "get-envs"
+      runs-on: ubuntu-latest
+      outputs:
+        DEPLOYMENTSTAGE: ${{ env.DEPLOYMENTSTAGE }}
+        SUBSCRIPTIONID: ${{ env.SUBSCRIPTIONID }}
+      steps:
+        - run: echo "null"
+  deploy:
+    runs-on: ubuntu-latest
+    needs: [get-env]
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v2
+
+      - name: Set up Azure CLI
+        uses: azure/login@v1
+        with:
+          creds: ${{ secrets.AZURE_CREDENTIALS }}
+
+      # Deploy resource group
+      - name: deploy-resource-group
+        id: deploy-1
+        uses: azure/arm-deploy@v1
+        with:
+          scope: subscription
+          subscriptionId: ${{ needs.get-env.outputs.SUBSCRIPTIONID }}
+          template: ./scripts/createresourcegroup.json
+          parameters: ./scripts/createresourcegroup-project1.${{ needs.get-env.outputs.DEPLOYMENTSTAGE }}.param.json
+          region: westeurope
+
+      - run: echo ${{ steps.deploy-1.outputs.ResourceGroupName }}
+
+      # Deploy ARM template - https://learn.microsoft.com/en-us/azure/azure-resource-manager/templates/deploy-github-actions?tabs=userlevel
+      - name: deploy-template
+        id: deploy-2
+        uses: azure/arm-deploy@v1
+        with:
+          subscriptionId: ${{ needs.get-env.outputs.SUBSCRIPTIONID }}
+          resourceGroupName: ${{ steps.deploy-1.outputs.ResourceGroupName }}
+          template: ./scripts/storage.json
+          parameters: ./scripts/storage-diag001.${{ needs.get-env.outputs.DEPLOYMENTSTAGE }}.param.json
+
+      - run: echo ${{ steps.deploy-2.outputs.storageAccountName }}
