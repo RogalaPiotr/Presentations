@@ -1,37 +1,37 @@
-# About Me
+# JustCloud.pl | Presentations
 
-Hello, my name is Piotr Rogala. This repository is a compilation of my work and passion for sharing knowledge. It's a testament to my continuous self-learning journey, where I dive into various technical subjects, particularly focused around Microsoft Azure, Automation, Git, Infrastructure as Code, and many more.
+**Microsoft Azure Expert | Cloud Computing Specialist**
 
-## My Presentations
+[![Website](https://img.shields.io/badge/Website-web.justcloud.pl-0078D4?style=for-the-badge&logo=googlechrome&logoColor=white)](https://web.justcloud.pl)
+[![Blog](https://img.shields.io/badge/Blog-blog.justcloud.pl-47b5ed?style=for-the-badge&logo=blogger&logoColor=white)](https://blog.justcloud.pl)
+[![RSS](https://img.shields.io/badge/RSS-blog.justcloud.pl-FFA500?style=for-the-badge&logo=rss&logoColor=white)](https://blog.justcloud.pl/rss.xml)
+[![Buy Me A Coffee](https://img.shields.io/badge/Buy%20Me%20A%20Coffee-Support-FFDD00?style=for-the-badge&logo=buy-me-a-coffee&logoColor=black)](https://www.buymeacoffee.com/justcloudpl)
 
-You'll find in this repository numerous presentations that I have prepared for various events. Each of these presentations is the result of my independent research and effort, reflecting the depth of knowledge I have gained over time.
+---
 
-### Topics
+| 🇵🇱 **Polski** | 🇬🇧 **English** |
+|----------------|-----------------|
+| **📖 O projekcie** | **📖 About Project** |
+| To repozytorium zawiera prezentacje i materiały szkoleniowe dotyczące **Microsoft Azure**, automatyzacji, DevOps i Infrastructure as Code. | This repository contains presentations and training materials about **Microsoft Azure**, automation, DevOps, and Infrastructure as Code. |
+| Wszystkie materiały powstały w ramach samodzielnej nauki i dzielenia się wiedzą ze społecznością. | All materials were created as part of self-learning and sharing knowledge with the community. |
+| Oprócz przygotowywania prezentacji, organizuję również wydarzenia techniczne i wspieram uczestników w rozwijaniu ich umiejętności. | Besides preparing presentations, I also organize technical events and support participants in developing their skills. |
 
-Some of the topics you can expect to find include:
+## 📊 Topics | Tematy
 
-- **Microsoft Azure**: An exploration of Microsoft's comprehensive cloud services solution, where I delve into the various functionalities and applications that Azure provides.
+- **Microsoft Azure** - Cloud services, architecture, best practices
+- **Automation** - PowerShell, Azure Automation, scripting
+- **DevOps** - CI/CD, Azure DevOps, GitHub Actions
+- **Infrastructure as Code** - ARM Templates, Bicep, Terraform
+- **Git** - Version control, workflows, best practices
 
-- **Automation**: A look into the automation tools and strategies, focusing on streamlining and improving efficiency in various technical processes.
 
-- **Git**: A thorough discussion on Git, a distributed version control system that is widely used for source code management.
+## 🔗 Connect | Kontakt
 
-- **Infrastructure as Code (IaC)**: A detailed exploration of the IaC model, which enables developers and IT administrators to manage servers, configurations, and deployments automatically and efficiently.
+- **Website:** [web.justcloud.pl](https://web.justcloud.pl)
+- **Blog:** [blog.justcloud.pl](https://blog.justcloud.pl)
+- **LinkedIn:** [linkedin.com/in/rogalapiotr](https://www.linkedin.com/in/rogalapiotr/)
+- **Twitter:** [@RogalaPiotr](https://twitter.com/RogalaPiotr)
 
-And many more...
+## Autor | Author
 
-## My Role as an Event Organizer
-
-Beyond preparing and presenting at events, I also take on the role of an event organizer. In this capacity, I provide support to participants, ensuring they have the best learning experience possible.
-
-Additionally, I am passionate about helping others grow in their knowledge and improve their market position. As such, I often offer advice, resources, and mentorship to individuals looking to broaden their understanding and develop their skills in the tech industry.
-
-## Let's Connect
-
-I welcome any discussions on these topics or other areas of interest in the tech field. Feel free to reach out to me for any questions, collaborations, or opportunities to learn and grow together.
-
-You can contact with me over page: <https://justcloud.pl>
-
-Linkedin: <https://www.linkedin.com/in/rogalapiotr/>
-
-Twitter: <https://twitter.com/RogalaPiotr>
+Piotr Rogala
